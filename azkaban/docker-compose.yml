@@ -1,0 +1,25 @@
+metadb:
+  build: ./metadb
+  environment:
+    MYSQL_ROOT_PASSWORD: azkaban
+    MYSQL_USER: azkaban
+    MYSQL_PASSWORD: azkaban
+    MYSQL_DATABASE: azkaban
+
+web:
+  build: ./web
+  links:
+    - metadb
+    - exec
+  ports:
+    - "18081:8081"
+  volumes:
+    - "./web/conf:/src/azkaban-web-server/conf:ro"
+
+exec:
+  build: ./exec
+  links:
+    - metadb
+  volumes:
+    - "./exec/conf:/src/azkaban-exec-server/conf:ro"
+
